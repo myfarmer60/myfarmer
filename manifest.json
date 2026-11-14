@@ -1,6 +1,6 @@
 {
-  "name": "মাই ফার্ম",
-  "short_name": "মাই ফার্ম",
+  "name": "My Farmer🐔",
+  "short_name": "My Farmer🐔",
   "description": "Manage your poultry farm, daily feed, mortality, body weight, FCR, expenses and stock records easily",
   "start_url": "/myfarmer/",
   "scope": "/myfarmer/",
