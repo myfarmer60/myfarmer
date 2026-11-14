@@ -1,0 +1,25 @@
+{
+  "name": "মাই ফার্ম",
+  "short_name": "মাই ফার্ম",
+  "description": "Manage your poultry farm, daily feed, mortality, body weight, FCR, expenses and stock records easily",
+  "start_url": "/myfarmer/",
+  "scope": "/myfarmer/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f7f1",
+  "theme_color": "#168343",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
