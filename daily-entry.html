@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>দৈনিক এন্ট্রি</title>
+<style>
+:root{--bg:#eef3ee;--card:#fff;--field:#f1f5f0;--line:#e1e8e0;--text:#16241a;--muted:#5f6f63;--green:#1a8247;--deep:#0e6232;--bad:#c0392b;--good:#1a8247}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1a13;--card:#17251c;--field:#1f3125;--line:#2a4031;--text:#e8f1ea;--muted:#9bb0a0;--green:#3fb26f;--deep:#1a8247;--bad:#ff8a7a;--good:#5fd18d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;font-size:17px}
+header{background:linear-gradient(135deg,var(--green),var(--deep));color:#fff;padding:22px 20px;border-radius:0 0 28px 28px}
+header h1{margin:0;font-size:22px}
+main{max-width:520px;margin:0 auto;padding:16px}
+.card{background:var(--card);border-radius:24px;padding:20px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:var(--field);border-radius:16px;padding:12px 14px}
+.stat small{color:var(--muted);display:block}
+.stat b{font-size:22px}
+h2{margin:0 0 14px;font-size:24px}
+label{display:block;margin:14px 0 6px;color:var(--text)}
+.row{display:flex;gap:10px}
+.row>.grow{flex:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,select{width:100%;font:inherit;color:var(--text);background:var(--field);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+select{width:auto;min-width:92px}
+input:focus,select:focus{outline:2px solid var(--green);outline-offset:1px}
+.group{margin-top:6px;padding-top:4px;border-top:1px solid var(--line)}
+.group h3{margin:14px 0 0;font-size:17px;color:var(--muted);font-weight:600}
+.preview{margin-top:18px;background:var(--field);border-radius:16px;padding:14px 16px}
+.preview div{display:flex;justify-content:space-between;padding:4px 0}
+.preview .big{font-size:22px;font-weight:700}
+.good{color:var(--good)}.bad{color:var(--bad)}
+.hint{color:var(--muted);font-size:14px;margin:6px 0 0}
+button{margin-top:18px;width:100%;font:inherit;font-weight:700;color:#fff;background:var(--green);border:0;border-radius:16px;padding:15px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+#msg{margin-top:12px;text-align:center;color:var(--good);min-height:1.4em}
+</style>
+</head>
+<body>
+<header><h1>দৈনিক এন্ট্রি</h1></header>
+<main>
+<div class="card">
+  <div class="stats">
+    <div class="stat"><small>বয়স</small><b id="age">–</b></div>
+    <div class="stat"><small>FCR</small><b id="topFcr">0.00</b></div>
+  </div>
+</div>
+
+<form class="card" id="f" novalidate>
+  <h2>দৈনিক এন্ট্রি</h2>
+  <div class="two">
+    <div><label for="day">দিন</label><input id="day" type="number" min="1"></div>
+    <div><label for="arr">মুরগি আসার তারিখ</label><input id="arr" type="date" value="2026-11-14"></div>
+  </div>
+
+  <div class="group"><h3>খাবার</h3></div>
+  <label for="feedPlan">খাবার দেওয়ার নিয়ম</label>
+  <div class="row"><input class="grow" id="feedPlan" type="number" step="any" min="0" inputmode="decimal"><select id="feedPlanU" aria-label="একক"><option value="kg">কেজি</option><option value="g">গ্রাম</option></select></div>
+  <label for="feedUsed">ব্যবহৃত খাবার</label>
+  <div class="row"><input class="grow" id="feedUsed" type="number" step="any" min="0" inputmode="decimal"><select id="feedUsedU" aria-label="একক"><option value="kg">কেজি</option><option value="g">গ্রাম</option></select></div>
+
+  <div class="group"><h3>মুরগির ওজন</h3></div>
+  <label for="wPlan">আজকের মুরগির ওজন কত লাগবে</label>
+  <div class="row"><input class="grow" id="wPlan" type="number" step="any" min="0" inputmode="decimal"><select id="wPlanU" aria-label="একক"><option value="g">গ্রাম</option><option value="kg">কেজি</option></select></div>
+  <label for="wAct">আজকের মুরগির ওজন কত দিয়েছে</label>
+  <div class="row"><input class="grow" id="wAct" type="number" step="any" min="0" inputmode="decimal"><select id="wActU" aria-label="একক"><option value="g">গ্রাম</option><option value="kg">কেজি</option></select></div>
+
+  <label for="dead">মৃত্যু</label>
+  <input id="dead" type="number" min="0" inputmode="numeric">
+
+  <label for="fcr">FCR (ফাঁকা = অটো)</label>
+  <input id="fcr" type="number" step="any" min="0" inputmode="decimal">
+  <p class="hint">ফাঁকা রাখলে ব্যবহৃত খাবার ÷ আজকের ওজন (কেজিতে) দিয়ে অটো হিসাব হবে।</p>
+
+  <div class="preview" aria-live="polite">
+    <div><span>সেভের আগে FCR</span><span class="big" id="pFcr">–</span></div>
+    <div><span>ওজন লক্ষ্যের তুলনায়</span><span id="pDiff">–</span></div>
+  </div>
+
+  <button type="submit">সেভ করুন</button>
+  <div id="msg" role="status"></div>
+</form>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const bn=(n,d=2)=>Number(n).toLocaleString('bn-BD',{minimumFractionDigits:d,maximumFractionDigits:d});
+// সব মান কেজিতে রূপান্তর: গ্রাম হলে ১০০০ দিয়ে ভাগ
+const kg=(v,u)=>{const n=parseFloat($(v).value);return isNaN(n)?null:($(u).value==='g'?n/1000:n)};
+
+function update(){
+  const arr=new Date($('arr').value);
+  if(!isNaN(arr)){
+    const today=new Date();today.setHours(0,0,0,0);
+    const d=Math.floor((today-arr)/864e5)+1;
+    if(!$('day').dataset.touched&&d>0)$('day').value=d;
+    $('age').textContent=d>0?bn(d,0)+' দিন':'–';
+  }
+  const used=kg('feedUsed','feedUsedU'),w=kg('wAct','wActU'),plan=kg('wPlan','wPlanU');
+  const manual=parseFloat($('fcr').value);
+  let fcr=!isNaN(manual)?manual:(used!==null&&w?used/w:null);
+  $('pFcr').textContent=fcr===null?'–':bn(fcr)+(isNaN(manual)?' (অটো)':' (হাতে দেওয়া)');
+  if(plan&&w!==null){
+    const diff=(w-plan)*1000;
+    $('pDiff').textContent=diff===0?'ঠিক আছে':bn(Math.abs(diff),0)+' গ্রাম '+(diff>0?'বেশি':'কম');
+    $('pDiff').className=diff>=0?'good':'bad';
+  }else{$('pDiff').textContent='–';$('pDiff').className=''}
+  return fcr;
+}
+$('day').addEventListener('input',()=>$('day').dataset.touched=1);
+document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',update));
+$('f').addEventListener('submit',e=>{
+  e.preventDefault();
+  const fcr=update();
+  if(fcr!==null)$('topFcr').textContent=bn(fcr);
+  $('msg').textContent='এন্ট্রি সেভ হয়েছে';
+});
+update();
+</script>
+</body>
+</html>
